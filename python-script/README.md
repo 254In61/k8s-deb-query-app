@@ -1,46 +1,21 @@
 Overview
 ========
-- Tool made up of 3 main parts.
+To query MySQL data running in a Kubernetes cluster using a Job, you can create a Python script that connects to the MySQL database and executes the desired queries. Then, you can containerize this script and run it as a Kubernetes Job. Here's how you can do it:
 
-- 1) Database : MySQL Database with a table called "countries"
+1. Write Python Script: Write a Python script that connects to the MySQL database and executes the query. You can use a MySQL client library like mysql-connector-python to interact with the database. Check db-query.py.
 
-- 2) Server script : Script that runs within the DB Server , which perfoms SQL querries to the DB.
+2. Containerize Python Script: Create a Dockerfile to containerize the Python script. Check Dockerfile.
 
-- 3) client end : Client script picks options, and sends a string over the network socket to a listening server. Server translates the string into an SQL query.
+3. Build Docker Image: Build the Docker image using the Dockerfile
 
-- Design obsifucates the DB Server from external environment.
+4. Run Job in Kubernetes: Define a Kubernetes Job YAML file to run the Python script as a Job. Check python-job.yaml
 
-TESTING
-========
-=> Pytest redirecting source to AWS??  :  $ sudo apt-get install python3-pytest
+5. Apply Job Configuration: Apply the Job configuration to your Kubernetes cluster.
+   $kubectl apply -f python-job.yaml
+   
+   - This Job will run the Python script as a container in the Kubernetes cluster, connect to the MySQL database, execute the query, and print the results.
 
-1) Unittests
--------------
-- pyytest of specific classes within the ServerModules.
 
-2) Integration testing
-----------------------
-- Workflow created in Jenkins server
-
-- Workflow runs the unittest first and when all is good, integration tests next.
-
-- Integration tests are done using Docker containers to simulate client end, who then run a client script with pre-defined data.
-
-docker
-=======
-- A ready docker image built as per the Dockerfile attached.
-
-- Docker images are created , script run and then destroyed, all within the ansible script, site.yml.
-
-How to Use
-==========
-- Set environmental variables for that specific subshell for:
-
-  1) MYSQL_USER 
-
-  2) MYSQL_PASSWORD
-
-- Start the server with server.py
 
 
 MySQL

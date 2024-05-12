@@ -1,6 +1,8 @@
 import socket
 from ServerModules.serverModules import *
 
+# Will I be going the socket connection or https API way?? I need a script that is constantly on and waiting for prompts?
+
 # Server socker role is just to create client socket
 # Client socket handles the exchange between client and server.
 
