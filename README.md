@@ -31,9 +31,9 @@ Getting it done
 
 TOMMOROW??
 ==========
-=> The challenge is, how does it piece together?
-=> There is a mysql created with the necessary data.
-=> To query MySQL data running in a Kubernetes cluster using a Job, you can create a Python script that connects to the MySQL database and executes the desired queries. Then, you can containerize this script and run it as a Kubernetes Job. 
-=> But how do I kickstart this Job for the queries to happen?
+- The challenge is, how does it piece together?
+- There is a mysql created with the necessary data.
+- To query MySQL data running in a Kubernetes cluster using a Job, you can create a Python script that connects to the MySQL database and executes the desired queries. Then, you can containerize this script and run it as a Kubernetes Job. 
+- But how do I kickstart this Job for the queries to happen?
    - To kickstart a Kubernetes Job when a certain string is received, you can set up an event-driven architecture where an event, such as receiving a string, triggers the creation of a Kubernetes Job. One common way to achieve this is by using a message broker like Kafka, RabbitMQ, or AWS SQS.
-=> This is when shit gets complex!!.. 
+- This is when shit gets complex!!.. 
