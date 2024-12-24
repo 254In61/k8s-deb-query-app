@@ -1,7 +1,7 @@
 # Create user
-create user 'dev'@'%' identified by 'dev@123'; # CREATE USER 'new_user'@'%' IDENTIFIED BY 'password'; ..'@'%' specifies that user can connect from any host.
-grant all privileges on *.* to 'dev'@'%'; # GRANT ALL PRIVILEGES ON *.* TO 'new_user'@'%'; ..
-flush privileges; # Flush privileges to apply the changes
+create user 'dev'@'%' identified by 'dev@123';
+grant all privileges on *.* to 'dev'@'%';
+flush privileges;
 
 # Create db
 create database mydb;
