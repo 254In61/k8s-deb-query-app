@@ -131,4 +131,5 @@ kubectl delete deployment,svc mysql
 kubectl delete pvc mysql-pv-claim
 kubectl delete pv mysql-pv-volume
 kubectl delete secret mysql-secret
+
 This series of commands delete the deployment, the service, PV, PVC, and the secret you created. The system confirms the successful deletion
