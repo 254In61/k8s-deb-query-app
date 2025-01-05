@@ -1,34 +1,11 @@
 # Overview
 - This is after the POD has been deployed and services are up and running.
+- End goal is for the mysql pod to be accessed by other pods which need to querry the DB.
+- In the countries project, a Python application server will be middle-man , handling client's HTTPS
+  requests and doing the mysql querry.
+- In this initial set-up, we access the pod from within the worker node to do the basic DB build tasks.
 
-# Within the Cluster
-You use a temporary Kubernetes pod to connect to the MySQL service.
-*** Comes in handy when running a Python3 POD that querries DB and returns to the clients.. Right?* 
-
-1. Start a mysql client pod (A pod that has mysql client already installed):
-   ** This is a temporary pod that dies and is deleted once not in use ***
-   $ kubectl run mysql-client --rm -it --image=bitnami/mysql --namespace database --command -- bash
-
-2. Once inside the pod, access the mysql-with-helm pod.
-   $ mysql -h mysql-with-helm-0 -u root -p
-
-## Outside the Cluster
-- If accessing from within the NODE .
-
-  $ kubectl get pod -n database
-NAME                READY   STATUS    RESTARTS   AGE
-mysql-with-helm-0   1/1     Running   0          49m
-
-  $ kubectl exec --stdin --tty mysql-with-helm-0 -n database -- /bin/bash
-
-You will need to expose MySQL to the outside world as a service.
-
-In my case, I am using NodePort since it is a home-lab with no loadbalance.
-
-
-# Access MySQL DB instance & build tables
-
-## Access the mydb instance to build the db tables
+# Access the mydb instance to build the db tables, user etc
 1. List pods
 
  $ kubectl get pod
@@ -38,38 +15,39 @@ In my case, I am using NodePort since it is a home-lab with no loadbalance.
 
 2. Get a shell for the pod by executing the following command from the worker node(the-eagle)
 
- $ kubectl exec --stdin --tty <pod name> -- /bin/bash 
+ $ kubectl exec --stdin --tty <pod name> -n <namespace> -- /bin/bash 
 
- $ kubectl exec --stdin --tty mysql-85d5bb8d57-9ng7v -- /bin/bash
-   bash-4.4#
+ $ kubectl exec --stdin --tty mysql-deployment-5c994b9fc-j8257 -n countries -- /bin/bash
+bash-5.1#
 
 3. access the MySQL shell and type in the password created when building the secret using mysql-secret.yml.
   ** So, how does one store this password securely??**
 
 bash-4.4# mysql -p
 Enter password: 
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 9
-Server version: 8.3.0 MySQL Community Server - GPL
 
-Copyright (c) 2000, 2024, Oracle and/or its affiliates.
 
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
+  -  Build the DB from here (Ref : db-build.sh )
 
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+  -  Build new username that can be used by the scripts (Ref : db-build.sh )
 
-mysql> 
-mysql> 
+# Access DB instance from a different source
 
-## Build user & the db tables
+## Within the Cluster
+You use a temporary Kubernetes pod to connect to the MySQL service.
+*** Comes in handy when running a Python3 POD that querries DB and returns to the clients.. Right?* 
 
-1. Build the DB from here (Ref : db-build.sh )
+1. Start a mysql client pod (A pod that has mysql client already installed):
+   ** This is a temporary pod that dies and is deleted once not in use ***
+   ** There will be a permanent POD using python that will be running a continous server-side script.
 
-2. Build new username that can be used by the scripts (Ref : db-build.sh )
+   $ kubectl run mysql-client --rm -it --image=bitnami/mysql --namespace database --command -- bash
 
-## Confirm all is created - Access DB instance remotely
+2. Once inside the pod, access the mysql-with-helm pod.
+   $ mysql -h mysql-with-helm-0 -u root -p
+
+
+
 
 1. Check IP
  $ kubectl get svc
@@ -90,6 +68,24 @@ Server version: 9.1.0 MySQL Community Server - GPL
 
 mysql> use mydb;
 mysql> select * from countries;
+
+
+
+## Outside the Cluster
+- If accessing from within the NODE .
+
+  $ kubectl get pod -n database
+NAME                READY   STATUS    RESTARTS   AGE
+mysql-with-helm-0   1/1     Running   0          49m
+
+  $ kubectl exec --stdin --tty mysql-with-helm-0 -n database -- /bin/bash
+
+You will need to expose MySQL to the outside world as a service.
+
+In my case, I am using NodePort since it is a home-lab with no loadbalance.
+
+
+
 
 # Update Your MySQL Deployment
 

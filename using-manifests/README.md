@@ -15,7 +15,9 @@ To get this going, you have to :
    - PV claim is found under Config & Storage
 
 To confirm:
-   $ kubectl get persistentvolume
+   $ kubectl get pv
+
+   $ kubectl get pv -n <namespace>
 
 
 # Step 2 : Deploy the secrets
@@ -23,28 +25,31 @@ To confirm:
 DB needs credentials to access, right?
    - Define the secret to be deployed in a .yaml file.
    - Apply the changes.
-     $ kubectl apply -f mysql-secret.yaml 
+     $ kubectl apply -f manifests/mysql-secret.yaml 
        secret/mysql-secret created
 
    - Secret is defined under Config and Storage
 
 To confirm:
-    $ kubectl get secrets
+    $ kubectl get secrets -n <namespace>
 
 # Step 3 : Deploy the pods
 Deploy the DB and then expose it to the outside world as K8s service.
    - Define the deployment and service in a .yml file.
    - Apply the changes
   
-     $ kubectl apply -f mysql-deployment.yaml
-       deployment.apps/mysql created
-
-     $ kubectl apply -f mysql-deployment.yaml
-       service/mysql created
+   $ kubectl apply -f manifests/mysql-deployment.yaml
+      deployment.apps/mysql created
 
 To confirm:
-   $ kubectl get deployment
+   $ kubectl get pods -n countries
+   $ kubectl describe pods mysql-deployment-5c994b9fc-j8257 -n countries
 
-   $ kubectl get svc   .. You get to see the IP and port
-    
+# Step 4 : Expose the DB to be accessed from outside the K8s cluster
+
+** Not really necessary.. The python3 application server will be a Pod within the cluster.
+** Plus you don't want your DB accessible from externally. 
+
+$ kubectl apply -f manifests/mysql-service.yaml
+
 

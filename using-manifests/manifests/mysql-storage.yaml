@@ -9,7 +9,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: mysql-pv-volume
-  namespace: countries
+  namespace: countries # PV is a cluster-wide resource but seems like this is needed here.
   labels:
     type: local
 spec:                         
@@ -33,3 +33,10 @@ spec:
   resources:
     requests:
       storage: 10Gi          # Should be equal or less than the PV capacity created.
+
+# Confirm deployments
+# PV : $ kubectl get pv ** pv are cluster-wide resources same as Nodes and StorageClass 
+# and are not namespace-scoped. They remain shared across the entire cluster.
+
+# PVC : This namespace-scoped. You need to check within the namespace.
+# $ kubectl get pvc -n countries
