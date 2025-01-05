@@ -3,15 +3,17 @@
 - End goal is for the mysql pod to be accessed by other pods which need to querry the DB.
 - In the countries project, a Python application server will be middle-man , handling client's HTTPS
   requests and doing the mysql querry.
+
+
+# Access mysql instance to build the db tables, user etc
+
 - In this initial set-up, we access the pod from within the worker node to do the basic DB build tasks.
 
-# Access the mydb instance to build the db tables, user etc
-1. List pods
+1. List service which tells you the IP address
 
- $ kubectl get pod
-   NAME                     READY   STATUS    RESTARTS      AGE
-   mysql-85d5bb8d57-9ng7v   1/1     Running   0             47m
-   nginx-7854ff8877-jdqjv   1/1     Running   1 (11h ago)   27h
+  $ kubectl get svc -n countries
+NAME        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+mysql-svc   ClusterIP   10.152.183.39   <none>        3306/TCP   47m
 
 2. Get a shell for the pod by executing the following command from the worker node(the-eagle)
 
@@ -31,7 +33,7 @@ Enter password:
 
   -  Build new username that can be used by the scripts (Ref : db-build.sh )
 
-# Access DB instance from a different source
+# Access mysql instance from a different host
 
 ## Within the Cluster
 You use a temporary Kubernetes pod to connect to the MySQL service.

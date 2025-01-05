@@ -45,11 +45,15 @@ To confirm:
    $ kubectl get pods -n countries
    $ kubectl describe pods mysql-deployment-5c994b9fc-j8257 -n countries
 
-# Step 4 : Expose the DB to be accessed from outside the K8s cluster
+# Step 4 : Expose the MySQL instance to be accessed from outside the pod.
 
-** Not really necessary.. The python3 application server will be a Pod within the cluster.
-** Plus you don't want your DB accessible from externally. 
+  $ kubectl apply -f manifests/mysql-service.yaml
 
-$ kubectl apply -f manifests/mysql-service.yaml
+To confirm:
+
+  $ kubectl get svc -n countries
+NAME        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+mysql-svc   ClusterIP   10.152.183.39   <none>        3306/TCP   47m
+
 
 
