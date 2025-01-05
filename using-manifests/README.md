@@ -7,7 +7,7 @@
 To get this going, you have to :
    - Define the PV and pvc in a manifest .yaml file
 
-     $ kubectl apply -f mysql-storage.yaml
+     $ kubectl apply -f manifests/mysql-storage.yaml
        persistentvolume/mysql-pv-volume created
        persistentvolumeclaim/mysql-pv-claim created
 
