@@ -2,17 +2,20 @@
 # 1. The first part defines the Persistent Volume(pv). Customize the amount of allocated storage in spec.capacity.storage and In spec.hostPath specify the volume mount point.
 # 2. The second part of the file defines the Persitent Volume Claim(pvc)
 
+# Deploy resources : $ kubectl apply -f manifests/mysql-storage.yaml
+# Delete resources : $ kubectl delete -f manifests/mysql-storage.yaml
+
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: mysql-pv
+  name: mysql-pv-volume
   namespace: countries
   labels:
     type: local
 spec:                         
   storageClassName: manual   
   capacity:                  
-    storage: 10Gi             
+    storage: 15Gi             
   accessModes:                
     - ReadWriteOnce           # This access mode allows the volume to be mounted as read-write by a single node at a time.
   hostPath:                  
@@ -21,7 +24,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mysql-pvc
+  name: mysql-pvc-claim
   namespace: countries
 spec:
   storageClassName: manual
@@ -29,4 +32,4 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi          # Should be equal or less than the PV capacity created.
+      storage: 10Gi          # Should be equal or less than the PV capacity created.

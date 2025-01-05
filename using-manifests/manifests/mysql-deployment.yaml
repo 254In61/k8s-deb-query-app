@@ -32,4 +32,4 @@ spec:
       volumes:                                  # This section specifies the volumes to be used in the Pod.
       - name: mysql-persistent-storage          # The name of the volume matches the one specified in volumeMounts.
         persistentVolumeClaim:                  # The PVC provides storage resources for the Pod.
-          claimName: mysql-pvc            
+          claimName: mysql-pvc-claim           
