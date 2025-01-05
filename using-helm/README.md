@@ -7,15 +7,14 @@ Popular applications, provided by Bitnami, ready to launch on Kubernetes using K
 For more information, please refer to the Bitnami charts project on GitHub.
 https://github.com/bitnami/charts 
 
-# Deploy Steps
-## Install Helm
+# Install Helm
 1. Install Helm cli tool
    $ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 2. Fix permissions of your ~/.kube/config file incase it is readable by whole group. 
    Chmod 600 should do.
 
-## Deploying an application e.g mysql ( Happens in the worker node , the-eagle)
+# Deploying mysql ( Happens in the worker node , the-eagle)
 
 1. Add a maintained Helm repo & update the repos
    $ helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -58,3 +57,28 @@ https://github.com/bitnami/charts
        3. Deploy with the custom values:
           $ helm install mysql-with-helm bitnami/mysql --namespace database -f mysql-values.yaml
      
+        
+4. Confirmation:
+   - Check if pod is up and running:
+
+     $ kubectl get pods -n database
+    NAME                READY   STATUS    RESTARTS   AGE
+    mysql-with-helm-0   1/1     Running   0          117s
+   
+   - Get service details :
+
+     $ kubectl get svc -n database
+     NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+     mysql-with-helm            ClusterIP   10.152.183.197   <none>        3306/TCP   4m40s
+     mysql-with-helm-headless   ClusterIP   None             <none>        3306/TCP   4m40s
+
+    - Verify Persistent Volume (if persistence is enabled):
+
+
+# Access MySQL
+- Steps are in CONSUMING-MYSQL
+- NB: *** Had challenges with the credentials.. Maybe I need to get it right when deploying with Helm.
+ 
+
+
+

@@ -1,0 +1,14 @@
+# End objective?
+# The mysql db to be accessed WITHIN the cluster.
+# There will be a pod running python3 server-side program that queries the mysql DB constantly.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-svc
+  namespace: countries
+spec:
+  ports:                   # This section defines the ports to be exposed by the Service.
+    - port: 3306           # Port that MySQL uses for database connections.           
+  selector:                # It selects the Pods to forward network traffic to.
+    app: mysql             # The Service forwards traffic to Pods with the label “app” equal to “mysql.” 
